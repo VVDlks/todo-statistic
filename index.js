@@ -24,6 +24,7 @@ function GetTodos() {
     }
     return todos;
 }
+
 function processCommand(command) {
     todo = GetTodos();
 
