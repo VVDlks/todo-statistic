@@ -30,13 +30,14 @@ function processCommand(command) {
             let important_commands = []
             let commands = todo
             for(let command of commands) {
-                if(command.indexOf('!')) {
+                if(command.indexOf('!') !== -1) {
                     important_commands.push(command)
                 }
             }
             for(let n = 0; n < important_commands.length; n++) {
                 console.log(important_commands[n])
             }
+            break;
         default:
             console.log('wrong command');
             break;
