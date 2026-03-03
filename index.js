@@ -38,8 +38,12 @@ function processCommand(command) {
         case 'sort':
             switch (parts[1]) {
                 case 'importance':
-                    const sorted = sortInstance(todo);
-                    console.log(sorted);
+                    const sortedI = sortInstance(todo);
+                    console.log(sortedI);
+                    break;
+                case 'date':
+                    const sortedD = sortDate(todo);
+                    console.log(sortedD);
                     break;
                 default:
                     console.log('wrong command');
@@ -71,4 +75,21 @@ function countInstance(line){
     return count;
 }
 
-// TODO you can do it!
+function sortDate (arr) {
+    const copyArr = [...arr];
+    return copyArr.sort((a, b) => {
+        const dateA = parseDate(a);
+        const dateB = parseDate(b);
+        return dateA - dateB;
+
+    })
+}
+function parseDate(line) {
+    const items = line.split(';');
+    if (items.length < 2) {
+        return new Date(0);
+    }
+    const item = items[1].trim();
+    return new Date(item);
+}
+
