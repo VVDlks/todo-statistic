@@ -14,20 +14,25 @@ function getFiles() {
 
 function GetTodos() {
     const todos = [];
+    const regex = /\/\/\s*TODO[\s:].*/i;
     for (const file of files) {
         for (const str of file.split('\n')){
-            const idx = str.indexOf('// TODO ')
-            if (idx !== -1) {
-                todo.push(str.slice(idx));
+            const res = str.match(regex);
+            if (res) {
+                todo.push(res[0]);
             }
+            // const idx = str.indexOf('// TODO ')
+            // if (idx !== -1) {
+            //     todo.push(str.slice(idx));
+            // }
         }
     }
     return todos;
 }
 
-function processCommand(command) {
-    todo = GetTodos();
+todos = GetTodos();
 
+function processCommand(command) {
     const parts = command.split(' ');
     switch (parts[0]) {
         case 'exit':
@@ -45,8 +50,12 @@ function processCommand(command) {
         case 'sort':
             switch (parts[1]) {
                 case 'importance':
-                    const sorted = sortInstance(todo);
-                    console.log(sorted);
+                    const sortedI = sortInstance(todo);
+                    console.log(sortedI);
+                    break;
+                case 'date':
+                    const sortedD = sortDate(todo);
+                    console.log(sortedD);
                     break;
                 default:
                     console.log('wrong command');
@@ -62,8 +71,7 @@ function processCommand(command) {
 
 function handleImportant() {
     let important_commands = [];
-    let commands = todo;
-    for (let command of commands) {
+    for (let command of todo) {
         if (command.indexOf('!') !== -1) {
             important_commands.push(command);
         }
@@ -105,4 +113,22 @@ function countInstance(line){
     return count;
 }
 
-// TODO you can do it!
+function sortDate (arr) {
+    const copyArr = [...arr];
+    return copyArr.sort((a, b) => {
+        const dateA = parseDate(a);
+        const dateB = parseDate(b);
+        return dateA - dateB;
+
+    })
+}
+function parseDate(line) {
+    const items = line.split(';');
+    if (items.length < 2) {
+        return new Date(0);
+    }
+    const item = items[1].trim();
+    return new Date(item);
+}
+
+//TOdO: aaa
