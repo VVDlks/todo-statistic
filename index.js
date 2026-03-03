@@ -22,13 +22,21 @@ function processCommand(command) {
         }
     }
 
-    switch (command) {
-        case 'exit':
-            process.exit(0);
-            break;
-        default:
-            console.log('wrong command');
-            break;
+    if (command === 'exit') {
+        process.exit(0);
+    } else if (command.startsWith('user ')) {
+        getByUsername(command.slice(5));
+    } else {
+        console.log('wrong command');
+    }
+}
+
+function getByUsername(username) {
+    const regex = new RegExp(`\/\/ TODO ${username};([^;]*);([^;]*)`, 'i')
+    for (const str of todo) {
+        if (regex.test(str)) {
+            console.log(str);
+        }
     }
 }
 
