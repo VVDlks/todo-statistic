@@ -21,37 +21,49 @@ function processCommand(command) {
             }
         }
     }
-    switch (command) {
+
+    const parts = command.split(' ');
+    switch (parts[0]) {
         case 'exit':
             process.exit(0);
             break;
+        case 'show':
+            console.log(todo)
+            break;
         case 'important':
-            let important_commands = []
-            let commands = todo
-            for(let command of commands) {
-                if(command.indexOf('!') !== -1) {
-                    important_commands.push(command)
-                }
-            }
-            for(let n = 0; n < important_commands.length; n++) {
-                console.log(important_commands[n])
-            }
+            handleImportant();
+            break;
+        case 'user':
+            handleUser(parts);
+            break;
+        case 'sort':
+
             break;
         default:
             console.log('wrong command');
             break;
     }
 
-    if (command === 'exit') {
-        process.exit(0);
-    } else if (command.startsWith('user ')) {
-        getByUsername(command.slice(5));
-    } else {
-        console.log('wrong command');
+}
+
+function handleImportant() {
+    let important_commands = [];
+    let commands = todo;
+    for (let command of commands) {
+        if (command.indexOf('!') !== -1) {
+            important_commands.push(command);
+        }
+    }
+    for (let n = 0; n < important_commands.length; n++) {
+        console.log(important_commands[n]);
     }
 }
 
-function getByUsername(username) {
+function handleUser(username) {
+    if (username.length != 2) {
+        console.log('wrong command');
+        return;
+    }
     const regex = new RegExp(`\/\/ TODO ${username};([^;]*);([^;]*)`, 'i')
     for (const str of todo) {
         if (regex.test(str)) {
